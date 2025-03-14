@@ -36,7 +36,7 @@ Clone this repository and run it locally.
 ```bash
 git clone https://github.com/yourusername/snake-game.git
 cd snake-game
-open index.html
+npm run start
 ```
 
 ## 🛠 Customization
