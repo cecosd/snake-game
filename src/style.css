@@ -1,0 +1,27 @@
+#world-holder {
+    display: block;
+    width: 90vw; 
+    height: 90vh;
+    margin: auto;
+}
+
+#world-holder > .row > .cell {
+    flex: 1; 
+    aspect-ratio: 1 / 1;
+    background-color: #d5d5d5;
+    border: 1px solid white;
+}
+
+#world-holder > .row > .player {
+    background-color: rgb(21, 153, 102);   
+    transition: transform 0.3s ease-in-out;
+}
+
+#world-holder > .row > .food {
+    background-color: rgb(129, 22, 22); 
+}
+
+#world-holder > .row > .tail {
+    background-color: rgb(32, 95, 179); 
+    border: 1px solid white   
+}
