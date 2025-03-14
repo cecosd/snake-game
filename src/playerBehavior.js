@@ -82,8 +82,6 @@ const movePlayer = (dir) => {
     gameState.yPrev = gameState.y
     clearLastPlayerPosition()
 
-    console.log(gameState.moves, dir, gameState.moves[dir])
-
     const [dx, dy] = gameState.moves[dir]
     gameState.x = recalculatePosition(gameState.x, gameState.rows, dx)
     gameState.y = recalculatePosition(gameState.y, gameState.cols, dy)
