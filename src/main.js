@@ -1,12 +1,12 @@
 
-import { gameState } from './defaultState.js'
-import {keyboardControllsEventListeners, gameOverEventListener} from './eventListeners.js'
-import {renderFood, renderPlayer, movePlayer} from './playerBehavior.js'
-import {worldSetup} from './world.js'
+import { gameState } from './state/defaultState.js'
+import {keyboardControllsEventListeners, gameOverEventListener} from './events-listeners/eventListeners.js'
+import {renderFood, renderPlayer, movePlayer} from './modules/playerBehavior.js'
+import {world} from './modules/world.js'
 
 
 const bootstrap = () => {
-    worldSetup()
+    world.setup()
     keyboardControllsEventListeners(movePlayer)
     renderPlayer()
     renderFood(gameState.maxFood)
