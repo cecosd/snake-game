@@ -1,4 +1,4 @@
-import { gameState } from '../state/defaultState.js'
+import { gameState } from '../state/worldState.js'
 
 class World {
     

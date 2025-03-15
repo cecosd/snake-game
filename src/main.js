@@ -1,5 +1,5 @@
 
-import { gameState } from './state/defaultState.js'
+import { gameState } from './state/worldState.js'
 import {keyboardControllsEventListeners, gameOverEventListener} from './events-listeners/eventListeners.js'
 import {renderFood, renderPlayer, movePlayer} from './modules/playerBehavior.js'
 import {world} from './modules/world.js'

@@ -1,10 +1,11 @@
-import { gameState } from '../state/defaultState.js'
+import { gameState } from '../state/worldState.js'
 
 let handleKeydown
 
 const keyboardControllsEventListeners = (callback) => {
     
     if (handleKeydown) {
+        // refresh event listeners
         document.body.removeEventListener('keydown', handleKeydown)
     }
 

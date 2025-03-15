@@ -1,4 +1,4 @@
-import { gameState, resetGame, saveState } from '../state/defaultState.js'
+import { gameState, resetGame, saveState } from '../state/worldState.js'
 
 const clearLastPlayerPosition = () => {
     let prevCell = document.getElementById(`${gameState.xPrev}-${gameState.yPrev}`);

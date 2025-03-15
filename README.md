@@ -11,19 +11,6 @@ A **vanilla JavaScript** implementation of the classic **Snake Game**, featuring
 - 🎯 **Edge Wrapping**: Snake moves from one side to the other.
 - 🔁 **Restart Without Page Reload**: Game resets dynamically without refreshing.
 
-## 📂 Project Structure
-```
-📦 Snake-Game
-├── 📜 index.html          # Main HTML file
-├── 🎨 src/
-│   ├── 📝 defaultState.js # Manages game state and persistence
-│   ├── 🕹 eventListeners.js # Handles keyboard and restart events
-│   ├── 🐍 playerBehavior.js # Handles movement, food, and tail logic
-│   ├── 🌍 world.js         # Creates and renders the game grid
-│   ├── 🎮 main.js          # Bootstrap script, initializes the game
-│   ├── 🎨 style.css        # Game styling
-```
-
 ## 🎮 How to Play
 1. **Start the Game**: The game automatically begins on page load.
 2. **Move the Snake**: Use `Arrow Keys` to move.
@@ -41,7 +28,7 @@ npm run start
 
 ## 🛠 Customization
 ### 🔹 Change Grid Size
-Modify `defaultState.js`:
+Modify `worldState.js`:
 ```js
 const DEFAULT_STATE = {
     rows: 15, // Change to your desired row count
