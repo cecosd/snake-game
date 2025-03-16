@@ -10,6 +10,7 @@ const bootstrap = () => {
     keyboardControllsEventListeners(movePlayer)
     renderPlayer()
     renderFood(worldState.get('maxFood'))
+    startGameLoop()
 }
 
 gameOverEventListener(bootstrap)
@@ -19,7 +20,7 @@ let gameInterval;
 const startGameLoop = () => {
     gameInterval = setInterval(() => {
         movePlayer(worldState.get('moveDirectionName'));
-    }, 200)
+    }, 500)
 };
 
 const stopGameLoop = () => clearInterval(gameInterval)

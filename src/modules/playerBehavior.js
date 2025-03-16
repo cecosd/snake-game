@@ -19,16 +19,6 @@ const collisionCheck = () => {
     }
 };
 
-const clearTailFields = () => {
-    const arr = worldState.get('tail') || [];
-    if (!Array.isArray(arr)) return;
-    
-    arr.forEach(([x, y]) => {
-        let el = document.getElementById(`${x}-${y}`);
-        if (el) el.classList.remove("tail");
-    });
-};
-
 const moveTail = () => {
     let tail = structuredClone(worldState.get('tail')) || [];
     if (!Array.isArray(tail) || tail.length === 0) return;

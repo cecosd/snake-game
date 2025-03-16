@@ -14,8 +14,8 @@ class WorldState {
                 up: [-1, 0],
                 down: [+1, 0]
             }),
-            moveDirection: [0, 0],
-            moveDirectionName: null,
+            moveDirection: [0, +1],
+            moveDirectionName: 'right',
             food: [],
             tail: []
         };
