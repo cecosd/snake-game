@@ -1,5 +1,4 @@
 class WorldState {
-
     constructor() {
         this.state = {
             rows: 10,
@@ -19,51 +18,75 @@ class WorldState {
             moveDirectionName: null,
             food: [],
             tail: []
-        }
+        };
     }
 
-    getState = () => {
-        return Object.freeze(this.state)
-    }
+    getState = () => this.state;
+
+    get = (prop) => this.state[prop];
+
+    set = (prop, value, shouldSave = false) => {        
+        if (Array.isArray(value) || typeof value === "object") {
+            this.state[prop] = structuredClone(value);
+        } else {
+            this.state[prop] = value;
+        }
+    
+        if (shouldSave) {
+            this.saveState();
+        }
+    };
+    
+
+    batchSaveState = () => {
+        clearTimeout(this.saveTimeout);
+        this.saveTimeout = setTimeout(() => this.saveState(), 50);
+    };
+
+    push = (prop, value) => {
+        let clonedArray = structuredClone(this.state[prop]) || [];
+        clonedArray.push(value);
+        this.state[prop] = clonedArray;
+        this.batchSaveState();
+    };
 
     resetGame = () => {
-        console.log("Game Resetting...")
+        console.log("Game Resetting...");
+        
+        this.state = structuredClone(new WorldState().state); // Deep reset
     
-        // Reset gameState to its initial state
-        Object.assign(gameState, structuredClone(this.getState()))
-    
-        // Clear stored state
-        localStorage.setItem('gameState', JSON.stringify(gameState))
-    
-        // Clear UI elements dynamically (no reload needed)
-        document.querySelectorAll('.player, .tail, .food').forEach(cell => {
-            cell.classList.remove('player', 'tail', 'food');
+        this.saveState();
+        
+        document.querySelectorAll(".player, .tail, .food").forEach(cell => {
+            cell.classList.remove("player", "tail", "food");
         });
     
-        document.body.dispatchEvent(new Event("restart"));  
-    }
+        setTimeout(() => {
+            document.body.dispatchEvent(new Event("restart"));
+        }, 100);
+    };
 
     loadState = () => {
         try {
-            const savedState = localStorage.getItem('gameState')
-            return savedState ? structuredClone(JSON.parse(savedState)) : structuredClone(this.getState())
+            const savedState = JSON.parse(localStorage.getItem('gameState'));
+            if (savedState && typeof savedState === "object") {
+                this.state = structuredClone(savedState);
+            } else {
+                throw new Error("Invalid game state, resetting...");
+            }
         } catch (e) {
-            console.warn("Corrupted game state detected. Resetting...")
-            return structuredClone(this.getState())
+            console.warn("Corrupted game state detected. Resetting...");
+            this.state = structuredClone(this.getState());
+            this.saveState();
         }
     };
 
     saveState = () => {
-        if (!gameState) return
-        localStorage.setItem('gameState', JSON.stringify(gameState))
+        if (!this.state) return;
+        localStorage.setItem('gameState', JSON.stringify(this.state));
     };
 }
 
+const worldState = new WorldState();
 
-
-const worldState = new WorldState()
-let gameState = worldState.loadState()
-let resetGame = worldState.resetGame()
-let saveState = worldState.saveState()
-
-export { gameState, resetGame, saveState }
+export { worldState };

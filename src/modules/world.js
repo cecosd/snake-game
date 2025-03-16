@@ -1,4 +1,4 @@
-import { gameState } from '../state/worldState.js'
+import { worldState } from '../state/worldState.js'
 
 class World {
     
@@ -36,6 +36,6 @@ class World {
     }
 }
 
-const world = new World(gameState.rows, gameState.cols)
+const world = new World(worldState.get('rows'), worldState.get('cols'))
 
 export {world}

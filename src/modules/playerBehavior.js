@@ -1,136 +1,136 @@
-import { gameState, resetGame, saveState } from '../state/worldState.js'
+import { worldState } from '../state/worldState.js'
 
 const clearLastPlayerPosition = () => {
-    let prevCell = document.getElementById(`${gameState.xPrev}-${gameState.yPrev}`);
+    let prevCell = document.getElementById(`${worldState.get('xPrev')}-${worldState.get('yPrev')}`);
     if (prevCell) prevCell.classList.remove("player");
 };
 
 const recalculatePosition = (dimention, maxSize, direction) => {
-    if(dimention == 0 && direction == -1) dimention = maxSize-1
-    else if (dimention == maxSize-1 && direction == +1) dimention = 0
-    else dimention += direction
-    return dimention
-}
+    return (dimention + direction + maxSize) % maxSize; // More concise wrap-around logic
+};
 
-const setMoveDirection = (direction) =>  {
-    gameState.moveDirection = direction
-    saveState()
-}
-
-const setMoveDirectionName = (directionName) =>  {
-    gameState.moveDirectionName = directionName
-    saveState()
-}
+const setMoveDirection = (direction) => worldState.set('moveDirection', direction, true);
+const setMoveDirectionName = (directionName) => worldState.set('moveDirectionName', directionName, true);
 
 const collisionCheck = () => {
-    if(gameState.tail.some(([tx, ty]) => tx === gameState.x && ty === gameState.y)) {
-        resetGame()
+    const arr = worldState.get('tail') || [];
+    if (arr.some(([tx, ty]) => tx === worldState.get('x') && ty === worldState.get('y'))) {
+        worldState.resetGame();
     }
-}
+};
 
 const clearTailFields = () => {
-    gameState.tail.forEach(a => {
-        let [x, y] = a
+    const arr = worldState.get('tail') || [];
+    if (!Array.isArray(arr)) return;
+    
+    arr.forEach(([x, y]) => {
         let el = document.getElementById(`${x}-${y}`);
-        el.classList.remove("tail");
-    })
-}
-
-const clearFoodFields = () => {
-    gameState.food.forEach(a => {
-        let [x, y] = a
-        let el = document.getElementById(`${x}-${y}`);
-        el.classList.remove("food");
-    })
-}
+        if (el) el.classList.remove("tail");
+    });
+};
 
 const moveTail = () => {
-    if (gameState.tail.length === 0) return
+    let tail = structuredClone(worldState.get('tail')) || [];
+    if (!Array.isArray(tail) || tail.length === 0) return;
 
-    let lastTail = gameState.tail.pop()
-    let lastCell = document.getElementById(`${lastTail[0]}-${lastTail[1]}`)
-    if (lastCell) lastCell.classList.remove("tail")
+    let lastTail = tail.pop();
+    let lastCell = document.getElementById(`${lastTail[0]}-${lastTail[1]}`);
+    if (lastCell) lastCell.classList.remove("tail");
 
-    gameState.tail.unshift([gameState.xPrev, gameState.yPrev])
+    tail.unshift([worldState.get('xPrev'), worldState.get('yPrev')]);
+    worldState.set('tail', tail);
 
     renderTail();
 };
 
-
 const addToTail = () => {
-    let [dx, dy] = gameState.moveDirection
-    const tailX = gameState.x - dx
-    const tailY = gameState.y - dy
-    let el = document.getElementById(`${tailX}-${tailY}`)
-    el.classList.add('tail')
-    gameState.tail.push([tailX, tailY])
-}
+    let [dx, dy] = worldState.get('moveDirection');
+    const tailX = worldState.get('x') - dx;
+    const tailY = worldState.get('y') - dy;
+    
+    let el = document.getElementById(`${tailX}-${tailY}`);
+    if (el) el.classList.add('tail');
+
+    worldState.push('tail', [tailX, tailY]);
+};
 
 const eat = () => {
-    let el = document.getElementById(`${gameState.x}-${gameState.y}`)
-    if (!el.classList.contains('food')) return
-    el.classList.remove('food')
-    removeFood(gameState.x, gameState.y)
-    addToTail()
-    renderFood()
+    let el = document.getElementById(`${worldState.get('x')}-${worldState.get('y')}`);
+    if (!el?.classList.contains('food')) return;
 
-}
+    el.classList.remove('food');
+    removeFood(worldState.get('x'), worldState.get('y'));
+    addToTail();
+    renderFood();
+};
 
 const movePlayer = (dir) => {
-    if(!dir) return
-    gameState.xPrev = gameState.x
-    gameState.yPrev = gameState.y
-    clearLastPlayerPosition()
+    if (!dir) return;
 
-    const [dx, dy] = gameState.moves[dir]
-    gameState.x = recalculatePosition(gameState.x, gameState.rows, dx)
-    gameState.y = recalculatePosition(gameState.y, gameState.cols, dy)
+    let x = worldState.get('x');
+    let y = worldState.get('y');
 
-    setMoveDirection(gameState.moves[dir])
-    setMoveDirectionName(dir)
-    eat()
-    moveTail(dir)
-    renderPlayer()
-    collisionCheck()
+    worldState.set('xPrev', x);
+    worldState.set('yPrev', y);
+    clearLastPlayerPosition();
+
+    const [dx, dy] = worldState.get('moves')[dir];
+    x = recalculatePosition(x, worldState.get('rows'), dx);
+    y = recalculatePosition(y, worldState.get('cols'), dy);
+
+    worldState.set('x', x);
+    worldState.set('y', y);
+
+    setMoveDirection(worldState.get('moves')[dir]);
+    setMoveDirectionName(dir);
+    eat();
+    moveTail();
+    renderPlayer();
+    collisionCheck();
+    worldState.batchSaveState();
 };
 
 const renderTail = () => {
-    gameState.tail.forEach(a => {
-        let [ax, ay] = a
-        document.getElementById(`${ax}-${ay}`).classList.add('tail')
-    })
-}
+    const arr = worldState.get('tail') || [];
+    if (!Array.isArray(arr)) return;
 
-const setFood = (x, y) => {
-    gameState.food.push([x, y])
-}
+    arr.forEach(([ax, ay]) => {
+        let el = document.getElementById(`${ax}-${ay}`);
+        if (el) el.classList.add('tail');
+    });
+};
+
+const setFood = (x, y) => worldState.push('food', [x, y]);
 
 const removeFood = (x, y) => {    
-    let foodIndex = gameState.food.findIndex(([fx, fy]) => fx === x && fy === y)
-    if(foodIndex > -1) gameState.food.splice(foodIndex, 1)
-}
+    let foodArray = worldState.get('food') || [];
+    let foodIndex = foodArray.findIndex(([fx, fy]) => fx === x && fy === y);
+
+    if (foodIndex > -1) {
+        foodArray.splice(foodIndex, 1);
+        worldState.set('food', foodArray);
+    }
+    worldState.batchSaveState();
+};
 
 const renderFood = (amount = 1) => {
     let placed = 0;
-
     while (placed < amount) {
-        let foodX = Math.floor(Math.random() * gameState.rows)
-        let foodY = Math.floor(Math.random() * gameState.cols)
+        let foodX = Math.floor(Math.random() * worldState.get('rows'));
+        let foodY = Math.floor(Math.random() * worldState.get('cols'));
 
         let cell = document.getElementById(`${foodX}-${foodY}`);
-
-        if (!cell.classList.contains("player") && !cell.classList.contains("food")&& !cell.classList.contains("tail") ) {
-            cell.classList.add("food")
-            setFood(foodX, foodY)
+        if (!cell?.classList.contains("player") && !cell?.classList.contains("food") && !cell?.classList.contains("tail")) {
+            cell.classList.add("food");
+            setFood(foodX, foodY);
             placed++;
         }
     }
-
-    saveState()
 };
 
 const renderPlayer = () => {
-    document.getElementById(`${gameState.x}-${gameState.y}`).classList.add('player')
-}
+    let el = document.getElementById(`${worldState.get('x')}-${worldState.get('y')}`);
+    if (el) el.classList.add('player');
+};
 
-export {renderFood, renderPlayer, movePlayer}
+export { renderFood, renderPlayer, movePlayer };

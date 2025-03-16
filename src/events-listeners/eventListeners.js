@@ -1,4 +1,4 @@
-import { gameState } from '../state/worldState.js'
+import { worldState } from '../state/worldState.js'
 
 let handleKeydown
 
@@ -10,22 +10,22 @@ const keyboardControllsEventListeners = (callback) => {
     }
 
     handleKeydown = function(event) { 
-        let hasTail = gameState.tail.length > 0;
+        let hasTail = worldState.get('tail').length > 0;
         switch (event.key) {
             case "ArrowLeft":
-                if (gameState.moveDirectionName === 'right' && hasTail) break
+                if (worldState.get('moveDirectionName') === 'right' && hasTail) break
                 callback('left');
                 break;
             case "ArrowRight":
-                if (gameState.moveDirectionName === 'left' && hasTail) break
+                if (worldState.get('moveDirectionName') === 'left' && hasTail) break
                 callback('right');
                 break;
             case "ArrowUp":
-                if (gameState.moveDirectionName === 'down' && hasTail) break
+                if (worldState.get('moveDirectionName') === 'down' && hasTail) break
                 callback('up');
                 break;
             case "ArrowDown":
-                if (gameState.moveDirectionName === 'up' && hasTail) break
+                if (worldState.get('moveDirectionName') === 'up' && hasTail) break
                 callback('down');
                 break;
         }
