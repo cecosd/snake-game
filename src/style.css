@@ -1,8 +1,9 @@
 #world-holder {
-    display: block;
-    width: 90vw; 
-    height: 90vh;
+    display: flex;
+    width: 50vw; 
+    height: auto;
     margin: auto;
+    flex-direction: column;
 }
 
 #world-holder > .row > .cell {
@@ -25,3 +26,21 @@
     background-color: rgb(32, 95, 179); 
     border: 1px solid white   
 }
+
+#toolbar-holder {
+    display: flex;
+    width: 50vw;
+    height: 4vw;
+    margin: auto;
+    background-color: rgb(58 167 126);
+}
+
+#toolbar-holder > #toolbar-controlls-holder {
+    display: flex;
+    background-color: rgb(64, 22, 182);
+    flex-direction: column;
+    margin: 1%;
+    height: auto;
+    width: 50%;
+}
+    

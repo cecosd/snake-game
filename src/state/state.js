@@ -1,6 +1,7 @@
-class WorldState {
+class State {
     constructor() {
         this.state = {
+            autoplay: false,
             rows: 10,
             cols: 20,
             maxFood: 4,
@@ -36,12 +37,6 @@ class WorldState {
             this.saveState();
         }
     };
-    
-
-    batchSaveState = () => {
-        clearTimeout(this.saveTimeout);
-        this.saveTimeout = setTimeout(() => this.saveState(), 50);
-    };
 
     push = (prop, value) => {
         let clonedArray = structuredClone(this.state[prop]) || [];
@@ -49,11 +44,16 @@ class WorldState {
         this.state[prop] = clonedArray;
         this.batchSaveState();
     };
+    
+    batchSaveState = () => {
+        clearTimeout(this.saveTimeout);
+        this.saveTimeout = setTimeout(() => this.saveState(), 50);
+    };
 
     resetGame = () => {
         console.log("Game Resetting...");
         
-        this.state = structuredClone(new WorldState().state); // Deep reset
+        this.state = structuredClone(new State().state);
     
         this.saveState();
         
@@ -87,6 +87,6 @@ class WorldState {
     };
 }
 
-const worldState = new WorldState();
+const state = new State();
 
-export { worldState };
+export { state };

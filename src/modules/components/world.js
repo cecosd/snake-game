@@ -1,4 +1,4 @@
-import { worldState } from '../state/worldState.js'
+import { state } from '../../state/state.js'
 
 class World {
     
@@ -11,11 +11,7 @@ class World {
         if (document.getElementById('world-holder')) return
 
         const holder = document.createElement('div')
-        holder.setAttribute('id', 'world-holder')
-        holder.style.display = "flex"
-        holder.style.flexDirection = "column"
-        holder.style.width = "90vw";
-        holder.style.height = "90vh" 
+        holder.setAttribute('id', 'world-holder') 
     
         Array.from({ length: this.rows }, (_, rowIndex) => {
             const row = document.createElement('div')
@@ -32,10 +28,11 @@ class World {
             holder.appendChild(row)
         });
     
-        document.body.appendChild(holder)  
+        const app = document.getElementById('app')
+        app.appendChild(holder)  
     }
 }
 
-const world = new World(worldState.get('rows'), worldState.get('cols'))
+const world = new World(state.get('rows'), state.get('cols'))
 
-export {world}
+export { world }

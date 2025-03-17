@@ -1,25 +1,27 @@
 
-import { worldState } from './state/worldState.js'
-import {keyboardControllsEventListeners, gameOverEventListener} from './events-listeners/eventListeners.js'
-import {renderFood, renderPlayer, movePlayer} from './modules/playerBehavior.js'
-import {world} from './modules/world.js'
+import { state } from './state/state.js'
+import {keyControlls, gameOver} from './events/events.js'
+import {renderFood, renderPlayer, movePlayer} from './modules/player.js'
+import {toolbar} from './modules/components/toolbar/toolbar.js'
+import {world} from './modules/components/world.js'
 
 
 const bootstrap = () => {
+    toolbar.setup()
     world.setup()
-    keyboardControllsEventListeners(movePlayer)
+    keyControlls(movePlayer)
     renderPlayer()
-    renderFood(worldState.get('maxFood'))
-    startGameLoop()
+    renderFood(state.get('maxFood'))
+    // startGameLoop()
 }
 
-gameOverEventListener(bootstrap)
+gameOver(bootstrap)
 
 let gameInterval;
 
 const startGameLoop = () => {
     gameInterval = setInterval(() => {
-        movePlayer(worldState.get('moveDirectionName'));
+        movePlayer(state.get('moveDirectionName'));
     }, 500)
 };
 
