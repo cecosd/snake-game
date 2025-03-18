@@ -3,8 +3,7 @@ import { state } from './state/state.js'
 import {keyControlls, gameOver} from './events/events.js'
 import {renderFood, renderPlayer, movePlayer} from './modules/player.js'
 import {toolbar} from './modules/components/toolbar/toolbar.js'
-import {world} from './modules/components/world.js'
-
+import {world} from './modules/world.js'
 
 const bootstrap = () => {
     toolbar.setup()

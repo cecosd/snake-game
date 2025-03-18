@@ -1,7 +1,5 @@
 class Food {
     constructor() {
 
-    }
-
-    
+    }    
 }

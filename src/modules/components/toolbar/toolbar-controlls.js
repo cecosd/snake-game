@@ -8,5 +8,4 @@ class ToolbarControlls extends UIComponent{
 
 const toolbarControlls = new ToolbarControlls('toolbar-controlls-holder', 'toolbar-holder', [], [])
 
-
 export { toolbarControlls }
