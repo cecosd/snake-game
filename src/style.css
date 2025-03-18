@@ -32,15 +32,31 @@
     width: 50vw;
     height: 4vw;
     margin: auto;
+}
+
+#toolbar-holder > .btn {
+    background-color: rgb(58 167 126);
+    border: none;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 5px 2px;
+}
+
+#toolbar-holder > .btn:hover {
+    background-color: rgb(41, 112, 85);
+}
+
+#toolbar-holder > .start-btn {
     background-color: rgb(58 167 126);
 }
 
-#toolbar-holder > #toolbar-controlls-holder {
-    display: flex;
-    background-color: rgb(64, 22, 182);
-    flex-direction: column;
-    margin: 1%;
-    height: auto;
-    width: 50%;
+#toolbar-holder > .pause-btn {
+    background-color: rgb(44, 137, 199);
+}
+
+#toolbar-holder > .reset-btn {
+    background-color: rgb(39, 39, 39);
+    color: white
 }
     

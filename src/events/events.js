@@ -46,4 +46,17 @@ const gameOver = (callback) => {
     })
 }
 
-export { keyControlls, gameOver }
+const startGame = () => {
+    document.body.addEventListener('start', (event) => {
+        state.set('autoplay', true)
+    })
+}
+
+const pauseGame = () => {
+    document.body.addEventListener('pause', (event) => {
+        state.set('autoplay', false)
+    })
+}
+
+
+export { keyControlls, gameOver, startGame, pauseGame }

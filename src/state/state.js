@@ -62,7 +62,7 @@ class State {
         });
     
         setTimeout(() => {
-            document.body.dispatchEvent(new Event("restart"));
+            location.reload();
         }, 100);
     };
 

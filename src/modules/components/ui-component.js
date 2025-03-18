@@ -1,39 +1,23 @@
-export default class UIComponent {
-    constructor(id, parentId, classNames, childComponents) {
-        this.id = id
-        this.parentId = parentId
-        this.classNames = classNames
-        this.childComponents = childComponents || []
+export class UIComponent {
+    constructor(tag = "div", id, className) {
+        this.element = document.createElement(tag);
+        if (className) this.element.className = className;
+        if (id) this.element.id = id;
     }
 
-    getEl() {
-        return document.getElementById(this.id)
+    appendTo(parent) {
+        if (parent instanceof HTMLElement) {
+            parent.appendChild(this.element);
+        } else {
+            console.error("Parent is not a valid HTML element");
+        }
     }
 
-    getParentEl() {
-        return document.getElementById(this.parentId)
+    setText(text) {
+        this.element.textContent = text;
     }
 
-    setup() {
-        if (document.getElementById(this.id)) return
-
-        const parent = document.getElementById(this.parentId)
-        
-        let el = document.createElement('div')
-        el.setAttribute('id', this.id)
-        this.classNames.forEach(a => el.classList.add(a))
-
-        parent.appendChild(el)
-
-        setTimeout(() => {
-            this.registerChildComponents()
-        }, 100);     
-    }
-
-    registerChildComponents() {
-        if( this.childComponents.length === 0) return
-        this.childComponents.forEach(a => {
-            a.setup()
-        })
+    addEvent(event, callback) {
+        this.element.addEventListener(event, callback);
     }
 }

@@ -1,18 +1,16 @@
-import { state } from '../state/state.js'
+import { UIComponent } from "../ui-component.js";
 
-class World {
-    
+export class World extends UIComponent {
     constructor(rows, cols) {
+        super("div", "world-holder");
+
         this.rows = rows
         this.cols = cols
+
+        this.setup()
     }
 
     setup() {
-        if (document.getElementById('world-holder')) return
-
-        const holder = document.createElement('div')
-        holder.setAttribute('id', 'world-holder') 
-    
         Array.from({ length: this.rows }, (_, rowIndex) => {
             const row = document.createElement('div')
             row.setAttribute('class', `row`)
@@ -25,14 +23,7 @@ class World {
                 row.appendChild(cell)
             }
     
-            holder.appendChild(row)
+            this.element.appendChild(row)
         });
-    
-        const app = document.getElementById('app')
-        app.appendChild(holder)  
     }
 }
-
-const world = new World(state.get('rows'), state.get('cols'))
-
-export { world }
